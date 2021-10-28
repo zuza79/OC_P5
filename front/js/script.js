@@ -1,26 +1,29 @@
-// utilisation du fetch
+ // utilisation du fetch
 // se rensegner c'est quoi les promesse javascript
 // utiliser des fonctions
 
 //declaration de la base de donnees
-let productData = [];
+const apiUrl = "http://localhost:3000/api/products/";
+let product = [];
+console.log(product);
 
-const fetchProduct = async() => {
-    await fetch("http://localhost:3000/api/products")
-      .then((res) => res.json())
-      .then((promise) => {
-         productData = promise;
-         console.log(productData);
+//appel d'API  
+fetch(apiUrl)
+      .then((reponse) => reponse.json())
+      .then((product) => {
+         console.log(product)
+         displayProducts(product);
       });
- };
-
- // afficher=display les produits
-const productDisplay = async () => {
-   await fetchProduct();
-   document.getElementById("items").innerHTML = `<img class="items a" src="${productData[0].imageUrl}" alt="Lorem ipsum dolor sit amet, Kanap name1" </img>
-   `
-   console.log(productDisplay);
-};
-
-productDisplay();
  
+ // afficher les produits
+ function displayProducts(products){
+   let html='';
+   products.forEach(element => {
+      html+='<a href="./product.html?_id='+element._id+'"><article><img src="'+
+      element.imageUrl+'" alt="'+element.altTxt+
+      '"><h3 class="productName">'+element.name+'</h3><p class="productDescription">'+
+      element.description+'.</p></article></a>';
+   });
+
+   document.getElementById("items").innerHTML= html;
+}
