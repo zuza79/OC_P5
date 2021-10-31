@@ -24,6 +24,5 @@ fetch(apiUrl)
       '"><h3 class="productName">'+element.name+'</h3><p class="productDescription">'+
       element.description+'.</p></article></a>';
    });
-
    document.getElementById("items").innerHTML= html;
 }
