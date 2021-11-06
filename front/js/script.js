@@ -1,4 +1,4 @@
- // utilisation du fetch
+// utilisation du fetch
 // se rensegner c'est quoi les promesse javascript
 // utiliser des fonctions
 
@@ -11,7 +11,7 @@ console.log(product);
 fetch(apiUrl)
       .then((reponse) => reponse.json())
       .then((product) => {
-         console.log(product)
+         console.table(product)
          displayProducts(product);
       });
  

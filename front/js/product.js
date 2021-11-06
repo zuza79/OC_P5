@@ -1,92 +1,63 @@
 //--------page product--------------
 
-//afficher photo de canape choisi dans index, remplir title prix et description
-//choisir la couleur - zobrazit fotku vybraneho objektu a musi to byt propojene do panier
-//declaration de la base de donnees
-const apiUrl = "http://localhost:3000/api/products/";
+const searchIdApiUrl = window.location.search;
+console.log(searchIdApiUrl);
+const idApi = searchIdApiUrl.slice (5);
+console.log(idApi);
+
+const idApiUrl= "http://localhost:3000/api/products/" + idApi;
+
 let product = [];
-console.log(product);
+
+//function imageSelectProduct() 
+//    fetch(idApiUrl)
+//.then((response) => response.json())
+//.then((product) => {
+//    console.log(product);
+//   let imageSelect = document.createElement("imageUrl");
+//    imageSelect.src = product[''];
+//   let newDiv = document.getElementsByClassName("items__img");
+//   newDiv.innerHTML = '';
+//    newDiv.appendChild(imageSelectProduct);
+//});
+//};
+//imageSelectProduct();
+
+
+let selectProduct = function(){
+    fetch(idApiUrl)
+.then((response) => response.json())
+.then((product) => {
+    console.log(product);
 
 //afficher image
-fetch(apiUrl)
-.then((response) => response.json())
-.then((product) => {
-    console.log(product)
-    displayOneImage(product);      
-    });
-function displayOneImage(products){
-    let htmlImage='';
-products.forEach(element => {
-htmlImage='<img src="${element.imageUrl}" alt="${element.altTxt}">';   
-});
-
-document.getElementsByClassName("item__img").innerHTML=htmlImage;
-}
+let imageSelectProduct = document.querySelector('.item__img').innerHTML += ` <img src="${productObject.imageUrl}" alt="${productObject.altTxt}">`;
+console.log(imageSelectProduct);
 
 //afficher title
-fetch(apiUrl)
-.then((response) => response.json())
-.then((product) => {
-    console.table(product)
-    displayOneTitle(product);      
-    });
-function displayOneTitle(products){
-    let htmlTitle='';
-products.forEach(element => {
-htmlTitle='<h1 id="title">'+element.name+'</h1>'    
-});
+let nameSelectProduct = document.getElementById("title");
+nameSelectProduct.innerHTML = product.name;
+console.log(nameSelectProduct);
 
-document.getElementById("title").innerHTML=htmlTitle;
-}
-
-
-//afficher price
-fetch(apiUrl)
-.then((response) => response.json())
-.then((product) => {
-    console.table(product)
-    displayOnePrice(product);      
-    });
-function displayOnePrice(products){
-let htmlPrice='';
-products.forEach(element => {
-htmlPrice='<span id="price">'+element.price+'</span>'    
-});
-
-document.getElementById("price").innerHTML=htmlPrice;
-}
+//afficher prix
+let priceSelectProduct = document.getElementById("price");
+priceSelectProduct.innerHTML = product.price;
+console.log(priceSelectProduct);
 
 //afficher description
-fetch(apiUrl)
-.then((response) => response.json())
-.then((product) => {
-    console.log(product)
-    displayOneDescription(product);      
-    });
-function displayOneDescription(products){
-let htmlDescription='';
-products.forEach(element => {
-htmlDescription='<p id="description">'+element.description+'</p>'    
-});
+let descriptionSelectProduct = document.getElementById("description");
+descriptionSelectProduct.innerHTML = product.description;
+console.log(descriptionSelectProduct);
 
-document.getElementById("description").innerHTML=htmlDescription;
+//afficher color
+let colorSelectProduct = document.getElementById("colors");
+for (i = 0; i < product.colors.lenght; i++){
+colorSelectProduct+= '<option value="${product.colors[i]}">'+product.colors+'</option>';   
 }
-//choisir color
-fetch(apiUrl)
-.then((response) => response.json())
-.then((product) => {
-    console.log(product)
-    displayColors(product);      
-    });
-function displayColors(products){
-let htmlColors='';
-products.forEach(element => {
-htmlColors='<select name="color-select" id="colors"><option value="">--SVP, choisissez une couleur --</option>'+element.colors+'</select>'    
+console.log(colorSelectProduct);
 });
+};
+selectProduct();
 
-document.getElementById("colors").innerHTML=htmlColors;
-}
-
-//options colour
-//message erreur quantité negativ ou +100
-//message erreur non remplisage coleur ou quantités
+//faire message erreur quantité negativ ou +100
+//faire message erreur non remplisage coleur ou quantités
