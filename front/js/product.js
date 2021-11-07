@@ -1,63 +1,51 @@
 //--------page product--------------
+//idProduct à modifier - urlProduct : url du produit à charger
+let idProduct = new URL(location.href).searchParams.get("_id");
+const urlProduct= "http://localhost:3000/api/products/" + idProduct;
+// charger le json du produit 
+chargerProduit(urlProduct);
 
-const searchIdApiUrl = window.location.search;
-console.log(searchIdApiUrl);
-const idApi = searchIdApiUrl.slice (5);
-console.log(idApi);
-
-const idApiUrl= "http://localhost:3000/api/products/" + idApi;
-
-let product = [];
-
-//function imageSelectProduct() 
-//    fetch(idApiUrl)
-//.then((response) => response.json())
-//.then((product) => {
-//    console.log(product);
-//   let imageSelect = document.createElement("imageUrl");
-//    imageSelect.src = product[''];
-//   let newDiv = document.getElementsByClassName("items__img");
-//   newDiv.innerHTML = '';
-//    newDiv.appendChild(imageSelectProduct);
-//});
-//};
-//imageSelectProduct();
-
-
-let selectProduct = function(){
-    fetch(idApiUrl)
-.then((response) => response.json())
+// charger le json du produit depuis l'api
+function chargerProduit(url){
+fetch(url)
+.then((reponse) => reponse.json())
 .then((product) => {
-    console.log(product);
-
-//afficher image
-let imageSelectProduct = document.querySelector('.item__img').innerHTML += ` <img src="${productObject.imageUrl}" alt="${productObject.altTxt}">`;
-console.log(imageSelectProduct);
-
-//afficher title
-let nameSelectProduct = document.getElementById("title");
-nameSelectProduct.innerHTML = product.name;
-console.log(nameSelectProduct);
-
-//afficher prix
-let priceSelectProduct = document.getElementById("price");
-priceSelectProduct.innerHTML = product.price;
-console.log(priceSelectProduct);
-
-//afficher description
-let descriptionSelectProduct = document.getElementById("description");
-descriptionSelectProduct.innerHTML = product.description;
-console.log(descriptionSelectProduct);
-
-//afficher color
-let colorSelectProduct = document.getElementById("colors");
-for (i = 0; i < product.colors.lenght; i++){
-colorSelectProduct+= '<option value="${product.colors[i]}">'+product.colors+'</option>';   
+    afficherProduit(product);
+})
+.catch((error) => {
+    console.log("erreur get product:"+error);
+    alert("Une erreur est survenue! Veuillez contacter l'administrateur du site."); });
 }
-console.log(colorSelectProduct);
-});
-};
-selectProduct();
 
-//faire message erreur quantité negativ ou +100
-//faire message erreur non remplisage coleur ou quantités
+// afficher image, title, prix, description, quantite
+function afficherProduit(produit){
+//afficher image
+document.querySelector('.item__img').innerHTML = ` <img src="${produit.imageUrl}" alt="${produit.altTxt}">`;
+//afficher title
+document.getElementById("title").innerHTML = produit.name;
+//afficher prix
+ document.getElementById("price").innerHTML = produit.price;
+//afficher description
+document.getElementById("description").innerHTML = produit.description;
+
+for (i = 0; i < produit.colors.length; i++){
+    document.getElementById("colors").innerHTML+= ` <option value="${produit.colors[i]}">${produit.colors[i]}</option>`;   
+}
+document.getElementById("addToCart").addEventListener('click', function(event){
+    event.stopPropagation();
+    event.preventDefault();
+
+    let idProduit=produit._id;
+    let colorProduit= document.getElementById("colors").value;
+    let quantiteProduit =document.getElementById("quantity").value;
+    
+    ajouterArticleDansPanier(idProduit,colorProduit, quantiteProduit);
+});
+}
+// Ajouter le produit dans le local Storage 
+function ajouterArticleDansPanier(id, color,quantite){
+
+    // gerer le local Storage 
+    console.log(id, color,quantite);
+}
+
