@@ -1,21 +1,15 @@
-// utilisation du fetch
-// se rensegner c'est quoi les promesse javascript
-// utiliser des fonctions
-
-//declaration de la base de donnees
+//declaration database
 const apiUrl = "http://localhost:3000/api/products/";
 let product = [];
 console.log(product);
-
-//appel d'API  
+//called API  
 fetch(apiUrl)
-      .then((reponse) => reponse.json())
+      .then((response) => response.json())
       .then((product) => {
          console.table(product)
          displayProducts(product);
       });
- 
- // afficher les produits
+  // display all products
  function displayProducts(products){
    let html='';
    products.forEach(element => {
