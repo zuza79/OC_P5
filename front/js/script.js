@@ -1,6 +1,6 @@
 //declaration database
 const apiUrl = "http://localhost:3000/api/products/";
-let product = [];
+var product = [];
 console.log(product);
 //called API  
 fetch(apiUrl)
@@ -11,7 +11,7 @@ fetch(apiUrl)
       });
   // display all products
  function displayProducts(products){
-   let html='';
+   var html='';
    products.forEach(element => {
       html+='<a href="./product.html?_id='+element._id+'"><article><img src="'+
       element.imageUrl+'" alt="'+element.altTxt+

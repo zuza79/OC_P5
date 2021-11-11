@@ -1,11 +1,10 @@
 //--------page product--------------
 //recuperation ID product
-let idProduct = new URL(location.href).searchParams.get("_id");
+var idProduct = new URL(location.href).searchParams.get("_id");
 const urlProduct = "http://localhost:3000/api/products/" + idProduct;
-// load json by product 
+// load JSON by product from API
 loadProduct(urlProduct);
-// load json by product from API
-function loadProduct(url) {
+function loadProduct(urlProduct) {
     fetch(urlProduct)
         .then((response) => response.json())
         .then((product) => {
@@ -30,38 +29,55 @@ function displayProduct(oneProduct) {
     for (i = 0; i < oneProduct.colors.length; i++) {
         document.getElementById("colors").innerHTML += `<option value="${oneProduct.colors[i]}">${oneProduct.colors[i]}</option>`;
     }}
+
+
     //----------button add to cart---("Ajouter au panier")----------------
     //add to cart 
     document.getElementById("addToCart").addEventListener('click', function (event) {
         event.stopPropagation();
         event.preventDefault();
-  //cart variables
-  let cartVariable = {
-    idOneProduct : idProduct,
-    titleProduct : document.getElementById("title").innerHTML,
-    colorProduct : document.getElementById("colors").value,
-    quantityProduct : document.getElementById("quantity").value,
-    };
-addProductToCart(cartVariable);
-});     
-// add product to local Storage 
-function addProductToCart(id, title, color, quantity) {
-    // administer local Storage 
-    console.log(id, title, color, quantity);
-};
-//declaration de variable addproductstorage dans la quelle on met les key et les value qui sont dans le local storage----------
-let addProductStorage = JSON.parse(localStorage.getItem("keyProduct"));
-//JSON c'est pour convertir les données au format JSON qui sont dans le local storage en objet JS
-console.log(addProductStorage); 
-//produit déja enregirre dans storage
-if(addProductStorage){
-    addProductStorage.push(cartVariable);
-    localStorage.setItem("keyProduct", JSON.stringify(addProductStorage)); 
-    console.log(addProductStorage);  
+   //recuperation des constantes qté et color
+   const quantity = document.getElementById("quantity").value;
+   const colorsOption = document.getElementById("colors").value;
+
+   if (quantity == 0 || colorsOption ==""){
+     alert("Veuillez choisir une couleur et une quantité > à 0!!");
+   }
+   else{
+  //product to add to cart
+  const productToAdd = { 
+    idProduct: idProduct,
+    quantityProduct : quantity,
+    colorsProduct: colorsOption,
+  };
+  console.log("product to add: "+productToAdd.colorsProduct);
+  let tableProducts= recupererPanier();
+   let checkProduct = false;
+    //collect info product without double
+    for (let product of tableProducts) {
+      if (idProduct === product.idProduct && colorsOption === product.colorsProduct) {
+        product.quantityProduct = parseInt(product.quantityProduct) + parseInt(quantity);
+        checkProduct = true;
+      }
+    }
+  
+  // add product load in local storage
+  if (!checkProduct) {
+    tableProducts.push(productToAdd);
+    localStorage.setItem("keyProduct", JSON.stringify(tableProducts));
+    console.log(tableProducts);
+    alert("Vos articles ont bien été ajouté au panier!");}
+  //product not load in local storage 
+  else{
+    
+    localStorage.setItem("keyProduct", JSON.stringify(tableProducts));
+  }
 }
-// pas enregistre dans storage
-else {
-    addProductStorage = [];
-    addProductStorage.push(cartVariable);
-    localStorage.setItem("keyProduct", JSON.stringify(addProductStorage)),
-    console.log(addProductStorage)}
+}); 
+
+function recupererPanier(){
+  //load products into local storage -> to table
+  return (JSON.parse(localStorage.getItem("keyProduct"))||[]);
+ 
+   }
+
