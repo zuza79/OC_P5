@@ -35,7 +35,7 @@ function displayProduct(oneProduct) {
         event.stopPropagation();
         event.preventDefault();
    //colect constants image, title, price, description, quantity, color
-   const imageUrl = document.querySelector('.item__img img').getAttribute("src")
+   const imageUrl = document.querySelector(".item__img img").getAttribute("src")
    const altTxt = document.querySelector(".item__img img").getAttribute("alt");
    const title = document.getElementById("title").innerHTML;
    const price = document.getElementById("price").innerHTML;
