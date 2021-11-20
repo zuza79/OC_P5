@@ -30,38 +30,20 @@ document.querySelector('#cart__items').innerHTML+= `<article class="cart__item" 
 </article>`;
 productTotal+= parseInt(elementCart.quantityProduct);
 }
+//modify quantity
+let quantityContainer = [...document.getElementsByClassName('itemQuantity')]
+quantityContainer.forEach((item, index) => {
+  item.addEventListener('click', () => {
+    tableProductsCart[index].quantityProduct = quantityContainer[index].value
+    localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
+    alert("Vous avez bien ajouter/supprimer quantité de votre article")
+    window.location.reload()
+  })
+   }) 
 
-
-//---a corriger ----Changer la quantité du panier par l'utilisateur
-const inputChange = (id) => {
-const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
-const novaHodnota = document.getElementById(id).querySelector(".itemQuantity");///
-novaHodnota.addEventListener('input', (e) => {
-  if (tableProductsCart) {
-     const id = e.target.getAttribute("data-id");
-     console.log(id);
-      
-      const newQuantity = e.target.value;
-      console.log(newQuantity);
-      console.log(e);
-     tableProductsCart
-       .filter((keyProduct) => keyProduct.IdProduct === id)
-       .map((focusKeyProduct) => {
-        focusProduct.quantity = newQuantity;
-         return focusKeyProduct;
-      });
-      localStorage.setItem("keyProduct", JSON.stringify(tableProductsCart));
-      displayTotalPrice();
-     inputChange();
-   }
-   window.location.reload();
-  });
-};
-//--------ok------display total number products
+//display total number products
 document.querySelector('#totalQuantity').innerHTML = productTotal;
-
-
-//---------ok -------- display total price cart
+// display total price cart
 const displayTotalPrice = () => {
    if (tableProductsCart) {
     const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
@@ -70,29 +52,25 @@ const displayTotalPrice = () => {
         0
       );
       document.querySelector("#totalPrice").innerHTML = totalPrice;
-      
-  }
+    }
 };
 displayTotalPrice();
 
-//---a corriger ---- delete product of cart by button "Supprimer"
-let supprimer = document.querySelector(".deleteItem")
-supprimer.addEventListener("click", function(event)  {
-   event.stopPropagation();
-   event.preventDefault();
-       if (quantityProduct == 0 || colorsProduct ==""){
-         alert("Votre panier est vide!!!");
-       }
-       else{
-   const item = document.getElementById(supprimer);   
-   const idItem = item.getAttribute("id");
-   tableProductsCart = tableProductsCart.filter(
-     (p) => p.idProduct !== idItem 
-         );}
-   localStorage.setItem("keyProduct", JSON.stringify(tableProductsCart));
-   displayCart();
-   displayTotalPrice();
-    });
+// delete product from cart and reload API
+let deleteProduct = [...document.getElementsByClassName('deleteItem')]
+
+deleteProduct.forEach((element, index) => {
+element.addEventListener('click', () => {
+let deleteProductOfCart = deleteProduct[index].closest('.cart__item')
+    deleteProductOfCart.remove()
+    tableProductsCart.splice(index, 1)
+    alert("Votre article est bien supprimé.")
+localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
+ window.location.reload()
+ })
+})
+
+
  // -------------- start --- Form RegEX ------cart.htlm = line 75
   let form = document.querySelector(".cart__order__form");
     // ----firstName
@@ -136,7 +114,7 @@ supprimer.addEventListener("click", function(event)  {
       inputAdress.nextElementSibling.innerHTML = "";
       return true;
     } else {
-      inputAdress.nextElementSibling.innerHTML = "Saisissez votre adresse";
+      inputAdress.nextElementSibling.innerHTML = "Saisissez votre adresse correctement";
       return false;
     }
   };
@@ -169,7 +147,7 @@ supprimer.addEventListener("click", function(event)  {
       return true;
     } else {
       inputEmail.nextElementSibling.innerHTML =
-        "Saisissez votre adresse Email";
+        "Saisissez votre adresse Email correctement";
       return false;
     }
   };

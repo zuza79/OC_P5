@@ -72,7 +72,7 @@ function displayProduct(oneProduct) {
   if (!checkProduct) {
     tableProducts.push(productToAdd);
     localStorage.setItem("keyProduct", JSON.stringify(tableProducts));
-    console.log(tableProducts);
+    console.table(tableProducts);
     alert("Vos articles ont bien été ajouté au panier!");}
   //product not load in local storage 
   else{
