@@ -1,7 +1,6 @@
 //declaration database
 const apiUrl = "http://localhost:3000/api/products/";
 var product = [];
-console.log(product);
 //called API  
 fetch(apiUrl)
       .then((response) => response.json())

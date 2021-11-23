@@ -44,10 +44,10 @@ function displayProduct(oneProduct) {
    const colorsOption = document.getElementById("colors").value;
 
    if (quantity == 0 || colorsOption ==""){
-     alert("Veuillez choisir une couleur et une quantité > à 0!!!");
+     alert("Veuillez choisir une couleur et une quantité entre 0 et 100 !!!");
    }
-   else{
-  //product to add to cart ID, image, title, price, description, quantity, color
+     //product to add to cart ID, image, title, price, description, quantity, color
+  else{
   const productToAdd = {
     idProduct: idProduct,
     imageProduct : imageUrl,
@@ -59,8 +59,9 @@ function displayProduct(oneProduct) {
     colorsProduct: colorsOption,
   };
   console.log("product to add: "+productToAdd.colorsProduct);
+
   let tableProducts= collectCart();
-   let checkProduct = false;
+  let checkProduct = false;
     //collect info product without double
     for (let product of tableProducts) {
       if (idProduct === product.idProduct && colorsOption === product.colorsProduct) {
@@ -68,7 +69,7 @@ function displayProduct(oneProduct) {
         checkProduct = true;
       }
     }
-  // add product load in local storage
+  // add product load to local storage
   if (!checkProduct) {
     tableProducts.push(productToAdd);
     localStorage.setItem("keyProduct", JSON.stringify(tableProducts));

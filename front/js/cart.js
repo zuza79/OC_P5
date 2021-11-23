@@ -1,3 +1,10 @@
+//faire alert ("Votre panier est vide!!!")
+// var ou let?
+
+//ligne d'article article*quantité ????
+//   <p>Total: [Number(currentValue.${elementCart.quantityProduct} * currentValue.${elementCart.titleProduct}] €</p>
+// ligne22
+
 // --------------page cart "Panier" -------------------------------------
 //collect products from cart to local storage - form table
 const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
@@ -7,7 +14,8 @@ let productTotal=0;
 
 for (let elementCart of tableProductsCart){
 //display cart HTML
-document.querySelector('#cart__items').innerHTML+= `<article class="cart__item" data-id="${elementCart.idProduct}">
+document.querySelector('#cart__items').innerHTML+= 
+`<article class="cart__item" data-id="${elementCart.idProduct}">
 <div class="cart__item__img">
   <img src="${elementCart.imageProduct}" alt="${elementCart.altTxtProduct}">
 </div>
@@ -16,7 +24,7 @@ document.querySelector('#cart__items').innerHTML+= `<article class="cart__item" 
     <h2>${elementCart.titleProduct}</h2>
     <p>${elementCart.colorsProduct} </p>
     <p>${elementCart.priceProduct} €</p>
-  </div>
+ </div>
   <div class="cart__item__content__settings">
     <div class="cart__item__content__settings__quantity">
       <p>Qté : </p>
@@ -30,7 +38,7 @@ document.querySelector('#cart__items').innerHTML+= `<article class="cart__item" 
 </article>`;
 productTotal+= parseInt(elementCart.quantityProduct);
 }
-//modify quantity
+//modify quantity and reload API ("tableProductsCart")
 let quantityContainer = [...document.getElementsByClassName('itemQuantity')]
 quantityContainer.forEach((item, index) => {
   item.addEventListener('click', () => {
@@ -48,15 +56,13 @@ const displayTotalPrice = () => {
    if (tableProductsCart) {
     const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
     const totalPrice = tableProductsCart.reduce(
-        (accumulator, currentValue) => accumulator + Number(currentValue.quantityProduct * currentValue.priceProduct),
-        0
-      );
+        (accumulator, currentValue) => accumulator + Number(currentValue.quantityProduct * currentValue.priceProduct), 0);
       document.querySelector("#totalPrice").innerHTML = totalPrice;
     }
 };
 displayTotalPrice();
 
-// delete product from cart and reload API
+// delete product from cart and reload API ("tableProductsCart")
 let deleteProduct = [...document.getElementsByClassName('deleteItem')]
 
 deleteProduct.forEach((element, index) => {
@@ -147,13 +153,13 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
       return true;
     } else {
       inputEmail.nextElementSibling.innerHTML =
-        "Saisissez votre adresse Email correctement";
+        "Saisissez votre adresse Email correctement xxxxxxxx@xxxx.xx";
       return false;
     }
   };
  // --- end --- Form RegEX
 
- //------------------"POST" send informations to API and notify "order"
+ //---"POST"  (page "confirmation") send informations to API ("tableProductsCart") and notify "order"
  const preparedOrder = (sendOrder) => {
   fetch("http://localhost:3000/api/products/order", {
     method: "POST",
@@ -165,16 +171,14 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
   })
     .then((data) => data.json())
     .then((data) => {
-      console.log(data);
-      console.log(data.orderId);
       const orderId = data.orderId;
-
+      console.log(data.orderId);
       //transfer order to "confirmation.html" and clear localStorage
       window.location.href = "confirmation.html" + "?" + "name" + "=" + orderId;
       localStorage.clear();
     });
 };
-//validation form and send order
+//validation FORM and send ORDER
 const notifyOrder = () => {
   document.querySelector("#order").addEventListener("click", (event) => {
     event.preventDefault();
@@ -200,7 +204,7 @@ const notifyOrder = () => {
         let allId = storage[k].idProduct;
         products.push(allId);
       }
-
+        //---send ORDER to page "confirmation" with alert
       let sendOrder = {contact,products};
 
       localStorage.setItem("sendOrder", JSON.stringify(sendOrder));
