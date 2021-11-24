@@ -44,7 +44,7 @@ function displayProduct(oneProduct) {
    const colorsOption = document.getElementById("colors").value;
 
    if (quantity == 0 || colorsOption ==""){
-     alert("Veuillez choisir une couleur et une quantité entre 0 et 100 !!!");
+     alert("Veuillez choisir une couleur et une quantité entre 1 et 100 !!!");
    }
      //product to add to cart ID, image, title, price, description, quantity, color
   else{
@@ -62,6 +62,7 @@ function displayProduct(oneProduct) {
 
   let tableProducts= collectCart();
   let checkProduct = false;
+  
     //collect info product without double
     for (let product of tableProducts) {
       if (idProduct === product.idProduct && colorsOption === product.colorsProduct) {
@@ -85,4 +86,3 @@ function collectCart(){
   //load products into local storage -> to table
   return (JSON.parse(localStorage.getItem("keyProduct"))||[]);
  }
-
