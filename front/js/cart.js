@@ -1,4 +1,4 @@
-//faire alert ("Votre panier est vide!!!")
+//faire alert ("Votre panier est vide!!!)
 // var ou let?
 
 //ligne d'article article*quantité ????
@@ -22,7 +22,7 @@ document.querySelector('#cart__items').innerHTML+=
 <div class="cart__item__content">
   <div class="cart__item__content__titlePrice">
     <h2>${elementCart.titleProduct}</h2>
-    <p>${elementCart.colorsProduct} </p>
+    <p>${elementCart.colorsProduct}</p>
     <p>${elementCart.priceProduct} €</p>
  </div>
   <div class="cart__item__content__settings">
@@ -39,10 +39,10 @@ document.querySelector('#cart__items').innerHTML+=
 productTotal+= parseInt(elementCart.quantityProduct);
 }
 //modify quantity and reload API ("tableProductsCart")
-let quantityContainer = [...document.getElementsByClassName('itemQuantity')]
-quantityContainer.forEach((item, index) => {
-  item.addEventListener('click', () => {
-    tableProductsCart[index].quantityProduct = quantityContainer[index].value
+let quantityModify = [...document.getElementsByClassName('itemQuantity')]
+quantityModify.forEach((product, index) => {
+  product.addEventListener('click', () => {
+    tableProductsCart(index).quantityProduct = quantityModify(index).value
     localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
     alert("Vous avez bien ajouter/supprimer quantité de votre article")
     window.location.reload()
@@ -50,7 +50,8 @@ quantityContainer.forEach((item, index) => {
    }) 
 
 //display total number products
-document.querySelector('#totalQuantity').innerHTML = productTotal;
+ document.querySelector('#totalQuantity').innerHTML = productTotal
+ 
 // display total price cart
 const displayTotalPrice = () => {
    if (tableProductsCart) {
@@ -58,7 +59,7 @@ const displayTotalPrice = () => {
     const totalPrice = tableProductsCart.reduce(
         (accumulator, currentValue) => accumulator + Number(currentValue.quantityProduct * currentValue.priceProduct), 0);
       document.querySelector("#totalPrice").innerHTML = totalPrice;
-    }
+            }
 };
 displayTotalPrice();
 
@@ -67,7 +68,7 @@ let deleteProduct = [...document.getElementsByClassName('deleteItem')]
 
 deleteProduct.forEach((element, index) => {
 element.addEventListener('click', () => {
-let deleteProductOfCart = deleteProduct[index].closest('.cart__item')
+let deleteProductOfCart = deleteProduct(index).closest('.cart__item')
     deleteProductOfCart.remove()
     tableProductsCart.splice(index, 1)
     alert("Votre article est bien supprimé.")
@@ -90,7 +91,7 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
       inputFirstName.nextElementSibling.innerHTML = "";
       return true;
     } else {
-      inputFirstName.nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
+      inputFirstname="firstName".nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
       return false;
     }
   };
@@ -199,10 +200,10 @@ const notifyOrder = () => {
 
       const storage = JSON.parse(localStorage.getItem("keyProduct"));
 
-      const products = [];
+      const products = []
       for (k = 0; k < storage.length; k++) {
-        let allId = storage[k].idProduct;
-        products.push(allId);
+        let allIdOrder = storage[k].idProduct;
+        products.push(allIdOrder);
       }
         //---send ORDER to page "confirmation" with alert
       let sendOrder = {contact,products};

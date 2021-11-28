@@ -9,5 +9,3 @@ const addOrderId = () => {
     document.getElementById('orderId').innerHTML = orderConfirmation;
 };
 addOrderId();
-console.log(addOrderId)
-
