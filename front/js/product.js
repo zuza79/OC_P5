@@ -43,7 +43,7 @@ function displayProduct(oneProduct) {
    const quantity = document.getElementById("quantity").value;
    const colorsOption = document.getElementById("colors").value;
 
-   if (quantity == 0 || colorsOption ==""){
+   if (quantity == 0 || quantity>100 || colorsOption ==""){
      alert("Veuillez choisir une couleur et une quantité entre 1 et 100 !!!");
    }
      //product to add to cart ID, image, title, price, description, quantity, color

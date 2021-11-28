@@ -15,7 +15,7 @@ let productTotal=0;
 for (let elementCart of tableProductsCart){
 //display cart HTML
 document.querySelector('#cart__items').innerHTML+= 
-`<article class="cart__item" data-id="${elementCart.idProduct}">
+`<article class="cart__item" data-id="${elementCart.idProduct}" data-color="${elementCart.colorsProduct}">
 <div class="cart__item__img">
   <img src="${elementCart.imageProduct}" alt="${elementCart.altTxtProduct}">
 </div>
@@ -39,15 +39,40 @@ document.querySelector('#cart__items').innerHTML+=
 productTotal+= parseInt(elementCart.quantityProduct);
 }
 //modify quantity and reload API ("tableProductsCart")
-let quantityModify = [...document.getElementsByClassName('itemQuantity')]
-quantityModify.forEach((product, index) => {
-  product.addEventListener('click', () => {
-    tableProductsCart(index).quantityProduct = quantityModify(index).value
-    localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
-    alert("Vous avez bien ajouter/supprimer quantité de votre article")
-    window.location.reload()
-  })
-   }) 
+document.querySelectorAll('.itemQuantity').forEach(element => {
+  element.addEventListener('change', function (event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (this.value == 0 || this.value>100){
+      alert("Veuillez choisir une couleur et une quantité entre 1 et 100 !!!");
+    }
+    else{
+    updateLineQuantity(tableProductsCart, this.closest(".cart__item").dataset.id,
+     this.closest(".cart__item").dataset.color, this.value);
+     displayTotalPrice();
+    
+      alert("Vous avez bien ajouter/supprimer quantité de votre article");
+    window.location.reload();
+    }
+  });
+   }); 
+  
+   function updateLineQuantity(cart,id,color,quantity)
+   {
+     let trouve;
+     for(let product of cart ){
+        if(product.idProduct == id && product.colorsProduct==color){
+          trouve = cart.indexOf(product);
+          break;
+        }
+     }
+     // mettre à jour le champs quantité
+       cart[trouve].quantityProduct = parseInt(quantity); 
+       // sauvegarder le panier 
+       localStorage.setItem("keyProduct", JSON.stringify(cart));
+       
+   }
 
 //display total number products
  document.querySelector('#totalQuantity').innerHTML = productTotal
@@ -64,19 +89,35 @@ const displayTotalPrice = () => {
 displayTotalPrice();
 
 // delete product from cart and reload API ("tableProductsCart")
-let deleteProduct = [...document.getElementsByClassName('deleteItem')]
+// Suppression d'un article losqu'on clic sur "supprimer"
+document.querySelectorAll('.deleteItem').forEach(element => {
+  element.addEventListener('click', function (event) {
+    event.stopPropagation();
+    event.preventDefault();
 
-deleteProduct.forEach((element, index) => {
-element.addEventListener('click', () => {
-let deleteProductOfCart = deleteProduct(index).closest('.cart__item')
-    deleteProductOfCart.remove()
-    tableProductsCart.splice(index, 1)
-    alert("Votre article est bien supprimé.")
-localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
- window.location.reload()
- })
-})
+    deleteCartProduct(this.closest(".cart__item").dataset.id, this.closest(".cart__item").dataset.color);
+    this.closest("#cart__items").removeChild(this.closest(".cart__item"));
+    deleteCartProduct(productTotal(cart),displayTotalPrice(cart));
+    alert("Vous avez bien supprimer votre article");
+    window.location.reload();
+  });
 
+});
+function deleteCartProduct(cart,id,color,quantity)
+   {
+     let trouve;
+     for(let product of cart ){
+        if(product.idProduct == id && product.colorsProduct==color){
+          trouve = cart.indexOf(product);
+          break;
+        }
+     }
+     // mettre à jour le champs quantité
+       cart[trouve].quantityProduct = parseInt(quantity); 
+       // sauvegarder le panier 
+       localStorage.setItem("keyProduct", JSON.stringify(cart));
+       
+   }
 
  // -------------- start --- Form RegEX ------cart.htlm = line 75
   let form = document.querySelector(".cart__order__form");
