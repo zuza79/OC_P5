@@ -1,15 +1,11 @@
-//faire alert ("Votre panier est vide!!!)
-// var ou let?
-
-//ligne d'article article*quantité ????
-//   <p>Total: [Number(currentValue.${elementCart.quantityProduct} * currentValue.${elementCart.titleProduct}] €</p>
-// ligne22
-
 // --------------page cart "Panier" -------------------------------------
 //collect products from cart to local storage - form table
 const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
 console.table(tableProductsCart)
 
+if (tableProductsCart === null | tableProductsCart == 0){
+  alert ("Votre panier est vide!!!")
+}
 let productTotal=0;
 
 for (let elementCart of tableProductsCart){
@@ -89,36 +85,25 @@ const displayTotalPrice = () => {
 displayTotalPrice();
 
 // delete product from cart and reload API ("tableProductsCart")
-// Suppression d'un article losqu'on clic sur "supprimer"
-document.querySelectorAll('.deleteItem').forEach(element => {
-  element.addEventListener('click', function (event) {
-    event.stopPropagation();
-    event.preventDefault();
 
-    deleteCartProduct(this.closest(".cart__item").dataset.id, this.closest(".cart__item").dataset.color);
-    this.closest("#cart__items").removeChild(this.closest(".cart__item"));
-    deleteCartProduct(productTotal(cart),displayTotalPrice(cart));
-    alert("Vous avez bien supprimer votre article");
-    window.location.reload();
-  });
+let deleteProduct = document.querySelectorAll('.deleteItem')
 
-});
-function deleteCartProduct(cart,id,color,quantity)
-   {
-     let trouve;
-     for(let product of cart ){
-        if(product.idProduct == id && product.colorsProduct==color){
-          trouve = cart.indexOf(product);
-          break;
-        }
-     }
-     // mettre à jour le champs quantité
-       cart[trouve].quantityProduct = parseInt(quantity); 
-       // sauvegarder le panier 
-       localStorage.setItem("keyProduct", JSON.stringify(cart));
-       
-   }
+for (let d = 0; d < deleteProduct.length; d++){
+deleteProduct[d].addEventListener('click', (event) => {
+  event.stopPropagation();
+  event.preventDefault();
+  console.log(deleteProduct);
 
+  let deleteProductOfCart = deleteProduct[d].closest('.cart__item')
+    deleteProductOfCart.remove()
+    tableProductsCart.splice(d, 1)
+    alert("Votre article est bien supprimé.")
+localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
+ window.location.reload()
+})}
+  
+
+      
  // -------------- start --- Form RegEX ------cart.htlm = line 75
   let form = document.querySelector(".cart__order__form");
     // ----firstName
@@ -199,7 +184,7 @@ function deleteCartProduct(cart,id,color,quantity)
       return false;
     }
   };
- // --- end --- Form RegEX
+ // ----------- end --- Form RegEX
 
  //---"POST"  (page "confirmation") send informations to API ("tableProductsCart") and notify "order"
  const preparedOrder = (sendOrder) => {
