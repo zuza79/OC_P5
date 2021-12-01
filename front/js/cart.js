@@ -1,13 +1,14 @@
 // --------------page cart "Panier" -------------------------------------
 //collect products from cart to local storage - form table
 const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
-console.table(tableProductsCart)
+console.table(tableProductsCart);
 
+// alert if cart null
 if (tableProductsCart === null | tableProductsCart == 0){
   alert ("Votre panier est vide!!!")
-}
-let productTotal=0;
+};
 
+let productTotal=0;
 for (let elementCart of tableProductsCart){
 //display cart HTML
 document.querySelector('#cart__items').innerHTML+= 
@@ -19,7 +20,7 @@ document.querySelector('#cart__items').innerHTML+=
   <div class="cart__item__content__titlePrice">
     <h2>${elementCart.titleProduct}</h2>
     <p>${elementCart.colorsProduct}</p>
-    <p>${elementCart.priceProduct} €</p>
+    <p>${elementCart.priceProduct} €</p>  
  </div>
   <div class="cart__item__content__settings">
     <div class="cart__item__content__settings__quantity">
@@ -33,7 +34,8 @@ document.querySelector('#cart__items').innerHTML+=
 </div>
 </article>`;
 productTotal+= parseInt(elementCart.quantityProduct);
-}
+};
+
 //modify quantity and reload API ("tableProductsCart")
 document.querySelectorAll('.itemQuantity').forEach(element => {
   element.addEventListener('change', function (event) {
@@ -41,14 +43,14 @@ document.querySelectorAll('.itemQuantity').forEach(element => {
     event.preventDefault();
 
     if (this.value == 0 || this.value>100){
-      alert("Veuillez choisir une couleur et une quantité entre 1 et 100 !!!");
+      alert("Veuillez choisir une couleur et quantité entre 1 et 100 !!!");
     }
     else{
     updateLineQuantity(tableProductsCart, this.closest(".cart__item").dataset.id,
      this.closest(".cart__item").dataset.color, this.value);
      displayTotalPrice();
     
-      alert("Vous avez bien ajouter/supprimer quantité de votre article");
+    alert("Vous avez bien ajouter/supprimer quantité de votre article");
     window.location.reload();
     }
   });
@@ -56,37 +58,35 @@ document.querySelectorAll('.itemQuantity').forEach(element => {
   
    function updateLineQuantity(cart,id,color,quantity)
    {
-     let trouve;
+     let search;
      for(let product of cart ){
-        if(product.idProduct == id && product.colorsProduct==color){
-          trouve = cart.indexOf(product);
+        if(product.idProduct == id && product.colorsProduct == color){
+          search = cart.indexOf(product);
           break;
-        }
-     }
-     // mettre à jour le champs quantité
-       cart[trouve].quantityProduct = parseInt(quantity); 
-       // sauvegarder le panier 
-       localStorage.setItem("keyProduct", JSON.stringify(cart));
-       
-   }
+        };
+     };
+     // update "quantity"
+       cart[search].quantityProduct = parseInt(quantity); 
+     // save new cart 
+       localStorage.setItem("keyProduct", JSON.stringify(cart));   
+   };
 
 //display total number products
- document.querySelector('#totalQuantity').innerHTML = productTotal
- 
-// display total price cart
+ document.querySelector('#totalQuantity').innerHTML = productTotal;
+
+//display total price cart
 const displayTotalPrice = () => {
    if (tableProductsCart) {
     const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
     const totalPrice = tableProductsCart.reduce(
         (accumulator, currentValue) => accumulator + Number(currentValue.quantityProduct * currentValue.priceProduct), 0);
       document.querySelector("#totalPrice").innerHTML = totalPrice;
-            }
+    };
 };
 displayTotalPrice();
 
 // delete product from cart and reload API ("tableProductsCart")
-
-let deleteProduct = document.querySelectorAll('.deleteItem')
+let deleteProduct = document.querySelectorAll('.deleteItem');
 
 for (let d = 0; d < deleteProduct.length; d++){
 deleteProduct[d].addEventListener('click', (event) => {
@@ -97,13 +97,13 @@ deleteProduct[d].addEventListener('click', (event) => {
   let deleteProductOfCart = deleteProduct[d].closest('.cart__item')
     deleteProductOfCart.remove()
     tableProductsCart.splice(d, 1)
-    alert("Votre article est bien supprimé.")
-localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
- window.location.reload()
-})}
-  
+    alert("Votre article est bien supprimer.")
 
-      
+localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart));
+window.location.reload();
+}
+)};
+ 
  // -------------- start --- Form RegEX ------cart.htlm = line 75
   let form = document.querySelector(".cart__order__form");
     // ----firstName
@@ -117,13 +117,13 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
       inputFirstName.nextElementSibling.innerHTML = "";
       return true;
     } else {
-      inputFirstname="firstName".nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
+      inputFirstName="firstName".nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
       return false;
     }
   };
     //-----lastName
   form.lastName.addEventListener("input", function () {
-    checkLastName(this);
+       checkLastName(this);
   });
     const checkLastName = function (inputLastName) {
     let nameRegExp = new RegExp("^[a-zA-Z-\s].{2,25}$");
@@ -180,7 +180,7 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
       return true;
     } else {
       inputEmail.nextElementSibling.innerHTML =
-        "Saisissez votre adresse Email correctement xxxxxxxx@xxxx.xx";
+        "Saisissez votre adresse Email correctement example: xxxxxxxx@xxxx.xx";
       return false;
     }
   };
@@ -200,7 +200,7 @@ localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart))
     .then((data) => {
       const orderId = data.orderId;
       console.log(data.orderId);
-      //transfer order to "confirmation.html" and clear localStorage
+//transfer order to "confirmation.html" and clear localStorage
       window.location.href = "confirmation.html" + "?" + "name" + "=" + orderId;
       localStorage.clear();
     });
@@ -231,14 +231,14 @@ const notifyOrder = () => {
         let allIdOrder = storage[k].idProduct;
         products.push(allIdOrder);
       }
-        //---send ORDER to page "confirmation" with alert
+//---send ORDER to page "confirmation" with alert
       let sendOrder = {contact,products};
 
       localStorage.setItem("sendOrder", JSON.stringify(sendOrder));
 
       preparedOrder(sendOrder);
     } else {
-      alert("Veuillez remplir tous les champs avant d'envoyer le formulaire!!!");
+      alert("Veuillez remplir toutes les champs avant d'envoyer le formulaire!!!");
     }
   });
 };
