@@ -1,11 +1,11 @@
 // --------------page cart "Panier" -------------------------------------
 //collect products from cart to local storage - form table
 const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
-console.table(tableProductsCart);
+//console.table(tableProductsCart);
 
 // alert if cart null
 if (tableProductsCart === null | tableProductsCart == 0){
-  alert ("Votre panier est vide!!!")
+  alert ("Votre panier est vide!")
 };
 
 let productTotal=0;
@@ -43,14 +43,14 @@ document.querySelectorAll('.itemQuantity').forEach(element => {
     event.preventDefault();
 
     if (this.value == 0 || this.value>100){
-      alert("Veuillez choisir une couleur et quantité entre 1 et 100 !!!");
+      alert("Veuillez choisir quantité entre 1 et 100 ou supprimer votre article !!!");
     }
     else{
     updateLineQuantity(tableProductsCart, this.closest(".cart__item").dataset.id,
      this.closest(".cart__item").dataset.color, this.value);
      displayTotalPrice();
     
-    alert("Vous avez bien ajouter/supprimer quantité de votre article");
+    alert("Vous avez bien ajouté/supprimé quantité de votre article");
     window.location.reload();
     }
   });
@@ -92,13 +92,13 @@ for (let d = 0; d < deleteProduct.length; d++){
 deleteProduct[d].addEventListener('click', (event) => {
   event.stopPropagation();
   event.preventDefault();
-  console.log(deleteProduct);
+  //console.log(deleteProduct);
 
-  let deleteProductOfCart = deleteProduct[d].closest('.cart__item')
-    deleteProductOfCart.remove()
-    tableProductsCart.splice(d, 1)
-    alert("Votre article est bien supprimer.")
-
+  let deleteProductOfCart = deleteProduct[d].closest('.cart__item');
+    deleteProductOfCart.remove();
+    tableProductsCart.splice(d, 1);
+    alert("Votre article est bien supprimer.");
+    
 localStorage.setItem('keyProduct', JSON.stringify(tableProductsCart));
 window.location.reload();
 }
@@ -111,7 +111,7 @@ window.location.reload();
     checkFirstName(this);
   });                
   const checkFirstName = function (inputFirstName) {
-    let nameRegExp = new RegExp("^[a-zA-Z-\s].{2,25}$");//j'accepte azAZ-espace plusiersfois
+    let nameRegExp = new RegExp("^[a-zA-Z-\s].{2,25}$");//accept azAZ-espace 
     let testFirstName = nameRegExp.test(inputFirstName.value);
     if (testFirstName) {
       inputFirstName.nextElementSibling.innerHTML = "";
@@ -180,7 +180,7 @@ window.location.reload();
       return true;
     } else {
       inputEmail.nextElementSibling.innerHTML =
-        "Saisissez votre adresse Email correctement example: xxxxxxxx@xxxx.xx";
+        "Saisissez votre adresse Email correctement par example: xxxxxxxx@xxxx.xx";
       return false;
     }
   };

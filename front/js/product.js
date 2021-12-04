@@ -12,7 +12,7 @@ function loadProduct(urlProduct) {
             displayProduct(product);
         })
         .catch((error) => {
-            console.log("erreur get product:" + error);
+          //  console.log("erreur get product:" + error);
             alert("Une erreur est survenue! Veuillez contacter l'administrateur du site. Merci.");
         });
 };
@@ -60,7 +60,7 @@ function displayProduct(oneProduct) {
     quantityProduct : quantity,
     colorsProduct: colorsOption,
   };
-  console.log("product to add: "+productToAdd.colorsProduct);
+  //console.log("product to add: "+productToAdd.colorsProduct);
 
   let tableProducts= collectCart();
   let checkProduct = false;
@@ -76,8 +76,8 @@ function displayProduct(oneProduct) {
   if (!checkProduct) {
     tableProducts.push(productToAdd);
     localStorage.setItem("keyProduct", JSON.stringify(tableProducts));
-    console.table(tableProducts);
-    alert("Vos articles ont bien été ajouter au panier.");}
+    //console.table(tableProducts);
+    alert("Vos articles ont bien été ajouté au panier.");}
 
   //product not load in local storage 
   else{
@@ -86,7 +86,7 @@ function displayProduct(oneProduct) {
 }
 }); 
 
+//load products into local storage -> to table
 function collectCart(){
-  //load products into local storage -> to table
   return (JSON.parse(localStorage.getItem("keyProduct")) || []);
  }
