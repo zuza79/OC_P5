@@ -6,7 +6,7 @@ let product = [];
 fetch(apiUrl)
       .then((response) => response.json())
       .then((product) => {
-         //console.table(product);
+         console.table(product);
          displayProducts(product);
       });
 // display all products

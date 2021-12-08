@@ -1,7 +1,7 @@
  //-----page confirmation--------------
 //recuperation URL and ID order
 const urlConfirmation = new URL(window.location.href);
-    //console.table(urlConfirmation);
+    console.table(urlConfirmation);
 //fonction recuperation  (confirmation.htlm = line number 49)
 const addOrderId = () => {  
     const params = urlConfirmation.searchParams;

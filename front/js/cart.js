@@ -1,7 +1,7 @@
 // --------------page cart "Panier" -------------------------------------
 //collect products from cart to local storage - form table
 const tableProductsCart = JSON.parse(localStorage.getItem("keyProduct"));
-//console.table(tableProductsCart);
+console.table(tableProductsCart);
 
 // alert if cart null
 if (tableProductsCart === null | tableProductsCart == 0){
@@ -92,7 +92,7 @@ for (let d = 0; d < deleteProduct.length; d++){
 deleteProduct[d].addEventListener('click', (event) => {
   event.stopPropagation();
   event.preventDefault();
-  //console.log(deleteProduct);
+  console.log(deleteProduct);
 
   let deleteProductOfCart = deleteProduct[d].closest('.cart__item');
     deleteProductOfCart.remove();
@@ -117,7 +117,7 @@ window.location.reload();
       inputFirstName.nextElementSibling.innerHTML = "";
       return true;
     } else {
-      inputFirstName="firstName".nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
+      inputFirstName.nextElementSibling.innerHTML = "Votre prénom doit comporter les lettres de 'a' à 'z' au moins 2 caractères et un maximum de 25 caractères!!!";
       return false;
     }
   };
